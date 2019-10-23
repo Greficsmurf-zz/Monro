@@ -14,9 +14,13 @@ namespace ArtMonroTest.Services
         public DataService(dbContext dbcontext) {
             _dbContext = dbcontext;
         }
-        public Task<List<TestData>> CheckSize(TestDataFilter filter)
+        public async Task<List<TestData>> CheckSize(TestDataFilter filter)
         {
-            return Task.FromResult(_dbContext.Set<TestData>().Where(x => x.ProductSize.ToLower().Equals(filter.ProductSize.ToLower())).ToList());
+            await UpdateAvailable();
+
+            var list = _dbContext.Set<TestData>().Where(x => x.ProductSize.ToLower().Equals(filter.ProductSize.ToLower()) && x.isAvailable == Database.Enums.IsInStock.IN_STOCK).ToList();
+           
+            return await Task.FromResult(list);
         }
 
         public async Task<List<TestData>> GetAllAsync()
