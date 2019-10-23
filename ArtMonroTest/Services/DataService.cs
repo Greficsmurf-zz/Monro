@@ -32,6 +32,7 @@ namespace ArtMonroTest.Services
             return await Task.FromResult(_dbContext.Set<TestData>().Where(x => x.isAvailable == Database.Enums.IsInStock.IN_STOCK).ToList());
         }
         private async Task UpdateAvailable() {
+            
             var list = _dbContext.Set<TestData>().Where(x => x.ProductAmount == 0).ToList();
             foreach (var i in list)
             {
